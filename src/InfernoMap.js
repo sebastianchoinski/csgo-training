@@ -335,11 +335,27 @@ export default function InfernoMap() {
   return (
     <div><p>Relative: ({localCoords.x}, {localCoords.y})</p>
     <img src={InfernoImg} onClick={handleMouseMove}></img>
-    <p>{JSON.stringify(maps)}</p>
-    <p>{Object.keys(maps).map((key) => (
-      <p>{key}</p>
-    ))
-    }</p>
+
+    <p>SSS</p>
+
+    
+    {
+      Object.entries(maps).map(([key, value]) =>  (
+        Object.entries(value).map(([key, value]) => (
+          Object.entries(value).map(([key,value]) => (
+              <div>
+              <p>Nazwa miejscowki:{value.name}</p>
+              <p>ID: {value.id}</p>
+              <p>X: {value.x}</p>
+              <p>Y: {value.y}</p>
+              </div>
+          ))
+        ))
+        )
+      )
+    }
+  
+
         </div>
   )
 }
