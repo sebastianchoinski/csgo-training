@@ -6,8 +6,17 @@ export default function InfernoMap() {
 
     const [localCoords, setLocalCoords] = useState({x: 0, y: 0});
     const [globalCoords, setGlobalCoords] = useState({x: 0, y: 0});
-
+    const [randomPlace, setRandomPlace] = useState()
+    
+    
+    const getRandomPlace = () => {
+      let places = data.find(x => x.id === 'inferno').places;
+      var randomplace = places[Math.floor(Math.random()*places.length)];
+      setRandomPlace(randomplace)
+    }
+    
     const handleMouseMove = event => {
+      getRandomPlace()
         setLocalCoords({
           x: event.clientX - event.target.offsetLeft,
           y: event.clientY - event.target.offsetTop,
@@ -21,7 +30,6 @@ export default function InfernoMap() {
           });
         };
         window.addEventListener('mousemove', handleGlobalMouseMove);
-    
         return () => {
           window.removeEventListener(
             'mousemove',
@@ -31,15 +39,19 @@ export default function InfernoMap() {
       }, []);
 
   const pointDistance = (Xa, Ya, Xb, Yb) => {
-    let distance = Math.sqrt((Math.pow(Xb)-Math.pow(Xa)) + (Math.pow(Yb) - Math.pow(Ya)))
-    return (distance);
+    let distance = Math.sqrt( (Math.pow(Xb-Xa, 2))+  (Math.pow(Yb-Ya, 2)))
+    return Math.ceil(distance);
   }
+
+  
 
   return (
     <div><p>Relative: ({localCoords.x}, {localCoords.y})</p>
     <img src={InfernoImg} onClick={handleMouseMove}></img>
-
+    <p>{JSON.stringify(randomPlace)}</p>
     <p>SSS</p>
+    
+    <p>X</p>
     {
         data.map((data) => (
             data.places.map((place) => (
@@ -47,13 +59,6 @@ export default function InfernoMap() {
                     <p>Name: {place.name}</p>
                     <p>X: {place.x}</p>
                     <p>Y: {place.y}</p>
-                    <p>{typeof place.x}</p>
-                    <p>{typeof place.y}</p>
-                    <p>{typeof localCoords.x}</p>
-                    <p>{typeof localCoords.y}</p>
-                    <p>{typeof Number(place.x)}</p>
-                    <p>{typeof Number(place.y)}</p>
-                    <p>{Math.sqrt((Math.pow(Number(place.x))-Math.pow(Number(localCoords.x))) + (Math.pow(Number(place.y)) - Math.pow(Number(localCoords.y))))}</p>
                     <p>Distance: {pointDistance(Number(place.x), Number(place.y), Number(localCoords.x), Number(localCoords.y))}</p>
                 </div>
             ))
